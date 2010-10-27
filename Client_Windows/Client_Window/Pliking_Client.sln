@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pliking_Client", "Pliking_Client\Pliking_Client.csproj", "{4B3E43BC-C13B-4225-8FD3-56B982F3D71F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B3E43BC-C13B-4225-8FD3-56B982F3D71F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B3E43BC-C13B-4225-8FD3-56B982F3D71F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B3E43BC-C13B-4225-8FD3-56B982F3D71F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B3E43BC-C13B-4225-8FD3-56B982F3D71F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,1 @@
+﻿XML Paper Specification v.1.0: http://www.microsoft.com/whdc/xps/xpsspec.mspx

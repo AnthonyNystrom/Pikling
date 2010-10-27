@@ -1,0 +1,77 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf460
+{\fonttbl\f0\fnil\fcharset0 TradeGothicLH-BoldExtended;\f1\fswiss\fcharset0 Helvetica;\f2\fmodern\fcharset0 CourierNewPS-BoldMT;
+\f3\fnil\fcharset0 LucidaGrande;\f4\fmodern\fcharset0 CourierNewPSMT;}
+{\colortbl;\red255\green255\blue255;\red0\green78\blue180;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww22020\viewh8900\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\b\fs28 \cf2 \
+
+\fs72 i18n
+\f1\b0\fs24 \cf0 \
+Per generare il file con le traduzioni:\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f2\b \cf0 $ cd <project dir>\
+$ genstrings ./Classes/*.m\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f1\b0 \cf0 \
+verr\'e0 generato un file 
+\f3 Localizable.strings che contiene i testi che andranno tradotti nelle varie lingue.\
+\
+\
+
+\f0\b\fs72 \cf2 SVN\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f3\b0\fs24 \cf0 Per uploadare la versione iniziale (cio\'e8 partendo dal nulla):\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f2\b \cf0 \strike \strikec0 svn import /Users/Alex/SVN/Pikling http://173.17.175.10/svn/project/iPhone -m "Initial import" --username AlexMantovani\
+\strike0\striked0 svn import /Users/Alex/SVN/Pikling https://7touchgroupinc.svn.cvsdude.com/pikling/pikling/iPhone -m "Initial import" --username alexmantovani
+\f3\b0 \
+\
+Per downloadare l'ultima versione presente nel repository:\
+\
+
+\f2\b \strike \strikec0 svn checkout http://173.17.175.10/svn/project/iPhone/ Pikling\
+\strike0\striked0 svn checkout https://7touchgroupinc.svn.cvsdude.com/pikling/pikling/iPhone Pikling --username alexmantovani
+\f3\b0 \
+\
+Per uploadare una nuova versione andare dentro alla directory del progetto da uploadare e dare il seguente comando:\
+\
+
+\f2\b svn commit -m "added howto section."\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f3\b0 \cf0 \
+Per aggiungere nuovi file nel repo dare il seguente comando:\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f2\b \cf0 svn add * --force\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f3\b0 \cf0 \
+poi eventualmante fare il commit di tutto\
+\
+\
+\
+Per uploadare una nuova versione del programma sul server SVN\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f4 \cf0 	#!/bin/bash\
+	# Entro nella work directory\
+	cd SVN/pikling\
+	# Cancello la dirctory build \
+	svn rm build/\
+	# Uploado la nuova versione del programma\
+	svn commit -m "commento"\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f3 \cf0 \
+\
+ecc...}

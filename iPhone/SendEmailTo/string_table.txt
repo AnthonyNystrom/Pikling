@@ -1,0 +1,24 @@
+String Table
+============
+
+"Communication error!" = "Communication error!";
+"Communication problems during image upload" = "Communication problems during image upload";
+"Done" = "Done";
+"Email" = "Email";
+"Final language" = "Final language";
+"Languages" = "Languages";
+"Ok" = "Ok";
+"Pikling has not found texts\non your picture!" = "Pikling has not found texts\non your picture!";
+"Pikling protocol error" = "Pikling protocol error";
+"Requesting..." = "Requesting...";
+"Retry" = "Retry";
+"Search engines" = "Search engines";
+"Search engines..." = "Search engines...";
+"Send to" = "Send to";
+"Setting" = "Setting";
+"Settings" = "Settings";
+"Sms" = "Sms";
+"Source image" = "Source image";
+"Source language" = "Source language";
+"Translated language" = "Translated language";
+"Uploading..." = "Uploading...";

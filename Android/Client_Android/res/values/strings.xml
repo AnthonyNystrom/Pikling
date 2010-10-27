@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Pikling!</string>
+    <string name="app_name">Pikling</string>
+<string name="setting_file">Settings</string>
+<string name="setting_lang_source">lang_source</string>
+<string name="setting_lang_dest">lang_dest</string>
+<string name="setting_lang_sendto">sendto</string>
+<string name="setting_lang_asksend">asksend</string>
+<string name="setting_lang_nummob">nummob</string>
+<string name="Contacts">Contatcs</string>
+<string name="intent_preview">preview</string>
+
+<string name="filename_img_tmp">pikling_tmp.jpg</string>
+<string name="filename_img">pikling.jpg</string>
+<string name="intent_searchemail">search_email</string>
+<string name="intent_email">email</string>
+<string name="intent_number">number</string>
+<string name="setting_cur_lon">cur_lon</string>
+<string name="setting_cur_lat">cur_lat</string>
+</resources>

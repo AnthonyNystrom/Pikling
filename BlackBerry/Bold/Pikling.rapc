@@ -1,0 +1,9 @@
+MIDlet-Name: Pikling
+MIDlet-Version: 0.0
+MIDlet-Vendor: <unknown>
+MIDlet-Jar-URL: Pikling.jar
+MIDlet-Jar-Size: 0
+MicroEdition-Profile: MIDP-2.0
+MicroEdition-Configuration: CLDC-1.1
+MIDlet-1: ,res/icon.png,
+RIM-MIDlet-Flags-1: 0

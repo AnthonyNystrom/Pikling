@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>JobIdentifier</key>
+	<data></data>
+	<key>OriginalLanguage</key>
+	<string></string>
+	<key>DestinationLanguage</key>
+	<string></string>
+	<key>Image</key>
+	<data></data>
+	<key>OriginalResult</key>
+	<string></string>
+	<key>DestinationResult</key>
+	<string></string>
+	<key>Status</key>
+	<integer>0</integer>
+	<key>ExecutionTime</key>
+	<date>2009-05-09T15:53:06Z</date>
+</dict>
+</plist>

@@ -1,0 +1,12 @@
+<publishData>
+  <publishTarget publishUrl="http://192.168.7.75/pdfsharpclock/">
+    <file relUrl="bin/PdfSharp.pdb" publishTime="12/11/2007 23:36:04" />
+    <file relUrl="bin/PDFsharpClock.dll" publishTime="12/12/2007 23:24:31" />
+    <file relUrl="Web.config" publishTime="05/08/2006 15:33:08" />
+    <file relUrl="Clock.aspx" publishTime="05/08/2006 15:42:50" />
+    <file relUrl="bin/de/PdfSharp.resources.dll" publishTime="12/11/2007 23:36:05" />
+    <file relUrl="bin/PdfSharp.XML" publishTime="12/11/2007 23:36:04" />
+    <file relUrl="bin/PdfSharp.dll" publishTime="12/11/2007 23:36:04" />
+    <file relUrl="bin/PDFsharpClock.pdb" publishTime="12/12/2007 23:24:31" />
+  </publishTarget>
+</publishData>

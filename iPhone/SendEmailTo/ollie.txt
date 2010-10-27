@@ -1,0 +1,6 @@
+
+Hi Ollie,
+To finish graphic side of Pikling I need:
+- Pikling Application Icon (for dashboard) needed to run Pikling.
+- Change size of "setting button" (same size of flag.png I've attached).
+- Icons 24x24 B/W to indicate these actions: "back to main", "send email to", "send sms to", "open in browser".

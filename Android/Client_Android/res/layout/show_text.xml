@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:scrollbarSize="12dip" android:layout_height="fill_parent">
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_height="fill_parent">
+
+
+
+<TextView android:layout_width="fill_parent" android:background="@android:drawable/edit_text" android:textColor="#000000" android:textSize="25sp" android:id="@+id/edText" android:layout_height="fill_parent" android:layout_weight="1.0"></TextView></LinearLayout>
+
+</ScrollView>

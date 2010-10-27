@@ -1,0 +1,423 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Threading;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Net.Sockets;
+using System.Net;
+using System.Collections;
+
+namespace Plinking_Server
+{
+    public partial class PlikingServerMain : Form
+    {
+        String _sFileJpgSelected = "";
+        TCPServer _sockServer;
+        ArrayList _arrDataProc = new ArrayList();
+        DocCreator _doccre = new DocCreator();
+
+        public PlikingServerMain()
+        {
+            InitializeComponent();
+            Thread th = new Thread(new ThreadStart(DoSplash));
+            //th.ApartmentState = ApartmentState.STA;
+            //th.IsBackground=true;
+            th.Start();
+            Thread.Sleep(2000);
+            th.Abort();
+            Thread.Sleep(1000);
+        }
+
+        public string StrRight(string param, int length)
+        {
+            //start at the index based on the lenght of the sting minus
+            //the specified lenght and assign it a variable
+            string result = param.Substring(param.Length - length, length);
+            //return the result of the operation
+            return result;
+        }
+
+        private void butLoadImg_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileOpen = new OpenFileDialog();
+            fileOpen.Filter = "Jpg Files (*.jpg)|*.jpg|Bmp files (*.bmp)|*.bmp";
+            fileOpen.FilterIndex = 0;
+            fileOpen.RestoreDirectory = false; //true;
+            if (fileOpen.ShowDialog() == DialogResult.OK)
+            {
+                _sFileJpgSelected = fileOpen.FileName;
+                pictureBox1.Image = Image.FromFile(fileOpen.FileName);
+                String sFileBmp;
+                if (StrRight(fileOpen.FileName, 3) == "jpg") // is a jpg ?
+                {   // convert in bmp. Modi work with bmp
+                    Image img = Image.FromFile(fileOpen.FileName);
+                    sFileBmp = Application.StartupPath + "\\" + "tmp.bmp";
+                    img.Save(sFileBmp, ImageFormat.Bmp);
+                }
+                else
+                    sFileBmp = fileOpen.FileName;
+                lblFile.Text = sFileBmp;
+            }
+        }
+        private void DoSplash()
+        {
+            Splash sp = new Splash();
+            sp.Show();
+            Thread.Sleep(2000);
+            sp.Hide();
+            sp.Dispose();
+        }
+
+        /// <summary>
+        /// Delete all thumbs and label controls
+        /// </summary>
+        private void ResetControls()
+        {
+            panelThumb.Controls.Clear();
+            pictureBox1.Image = null;
+        }
+
+        /// <summary>
+        /// Create a new folder work into app folder. 
+        /// </summary>
+        /// <param name="sName">Return only the name of folder</param>
+        /// <returns>Return the full path of folder created</returns>
+        public String GetNewFolder(ref String sName)
+        {
+            DateTime dateTime = DateTime.Now;
+            String sFolderName = Application.StartupPath + "\\" + String.Format("{0:00}", dateTime.Hour) + String.Format("{0:00}", dateTime.Minute) + String.Format("{0:00}", dateTime.Second) + String.Format("{0:0000}", dateTime.Millisecond);
+            Directory.CreateDirectory(sFolderName);
+            
+            int limit = sFolderName.LastIndexOf('\\') + 1;
+            sName = sFolderName.Substring(limit, (sFolderName.Length - limit));
+            if (sName.Length < 1)
+                sName = sFolderName.Substring(0, (sFolderName.Length - 1));
+
+            return sFolderName;
+        }
+        private void butMakeOcr_Click(object sender, EventArgs e)
+        {
+            if (lblFile.Text == "")
+            {
+                MessageBox.Show("Please, load an image");
+                return;
+            }
+            String sName="";
+            String sFolder=GetNewFolder(ref sName);
+            DataProc data = new DataProc(sFolder, lblFile.Text, _sFileJpgSelected, "");
+            _arrDataProc.Add(data);
+        }
+
+        void ocr_Click(object sender, EventArgs e)
+        {
+            Label lbl = (Label)sender;
+            MessageBox.Show(lbl.Text);
+        }
+
+        private void butReset_Click(object sender, EventArgs e)
+        {
+            ResetControls();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            String sPath = Application.StartupPath;
+            fTree.Load(sPath);
+            IPAddress ip = IPAddress.Parse("192.168.1.101");
+            _sockServer = new TCPServer(ip, 8080);
+            _sockServer.StartServer();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _sockServer.StopServer();
+        }
+        
+        public void AppendNewProcess(String sFolder, String sFileBmp, String sFileJpg, String sLang)
+        {
+            AddLog("New Process in queue");
+            DataProc data = new DataProc(sFolder, sFileBmp, sFileJpg, sLang);
+            _arrDataProc.Add(data);
+        }
+        public bool GetDataProc(String sFolder, ref DataProc DataP)
+        {
+            DataP=null;
+            foreach (Object obj in _arrDataProc)
+            {
+                DataProc d = (DataProc)obj;
+                if (d != null && d.getFolder() == sFolder)
+                    DataP = d;
+            }
+            if (DataP!=null)
+                return false;
+            return true;
+        }
+        delegate void AddLogCallback(string Message);
+        public void AddLog(string Message)
+        {
+            try
+            {
+                if (!lstLog.InvokeRequired)
+                {
+                    DateTime dateTime = DateTime.Now;
+                    Message = dateTime.ToShortDateString() + " " + dateTime.Hour + ":" + dateTime.Minute + ":" + dateTime.Second + " " + Message;
+                    this.lstLog.Items.Insert(0, Message);
+                }
+                else
+                {
+                    AddLogCallback d = new AddLogCallback(AddLog);
+                    Invoke(d, new object[] { Message });
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                bool bCanClear = true;
+                // loop for all request pending
+                foreach (Object obj in _arrDataProc)
+                {
+                    timer1.Enabled = false;
+                    DataProc d = (DataProc)obj;
+                    if (d!=null && !d.getProcessCompleted()) // already processed ?
+                    {
+                        ArrayList arString = new ArrayList();
+                        ModiWorker modi = new ModiWorker();
+                        bCanClear = false;
+                        this.Cursor = Cursors.WaitCursor;
+
+                        ResetControls();
+                        Croper crp = new Croper();
+                        AddLog("Start Croper:" + d.getFileBmp());
+                        pictureBox1.Image = Image.FromFile(d.getFileBmp());
+                        String sText = "";
+                        txtSrc.Text = "";
+                        txtDest.Text = "";
+                        Clipboard.Clear();
+
+                        bool bImagesCroped = false;
+                        if (chkCroper.Checked)
+                        {
+                            if (crp.Start(d.getFolder(), d.getFileBmp()))
+                            {
+                                bImagesCroped = true;
+                                AddLog("Croper completed");
+                                DirectoryInfo di = new DirectoryInfo(d.getFolder());
+                                FileInfo[] rgFiles = di.GetFiles("*.bmp");
+                                int iLeft = 0, iTop = 0, iCtrlCouter = 0;
+                                // show the thumb images present into the folder
+                                foreach (FileInfo fi in rgFiles)
+                                {
+                                    if (fi.Name.ToLower() != "0.bmp" && fi.Name.ToLower() != "0.jpg")
+                                    {
+                                        PictureBox p = new PictureBox();
+                                        p.Width = 110;
+                                        p.Height = 80;
+                                        p.Left = iLeft;
+                                        p.Top = iTop;
+                                        p.BorderStyle = BorderStyle.FixedSingle;
+                                        p.Tag = fi.Name;
+                                        panelThumb.Controls.Add(p);
+                                        iLeft += p.Width + 5;
+                                        String sFile = d.getFolder() + "\\" + fi.Name;
+                                        p.Image = Image.FromFile(d.getFolder() + "\\" + fi.Name);
+                                        p.SizeMode = PictureBoxSizeMode.StretchImage;
+                                        Label t = new Label();
+                                        t.Text = fi.Name;
+                                        t.Left = p.Left;
+                                        t.Top = p.Bottom;
+                                        panelThumb.Controls.Add(t);
+                                        // new worker ocr 
+                                        AddLog("Start Ocr:" + fi.Name);
+
+                                        sText = modi.Start(sFile, d.getLangFrom());
+                                        AddLog("Ocr complete:" + fi.Name);
+                                        // add a new label control with result of ocr
+                                        Label ocr = new Label();
+                                        ocr.Text = sText;
+                                        ocr.Left = t.Left;
+                                        ocr.Top = t.Bottom + 5;
+                                        ocr.Width = p.Width;
+                                        ocr.Name = iCtrlCouter.ToString();
+                                        if (sText != "")
+                                        {
+                                            arString.Add(sText);
+                                            ocr.BackColor = Color.Green;
+                                        }
+                                        else
+                                        {
+                                            arString.Add("");
+                                            ocr.Text = "FAILED";
+                                            ocr.BackColor = Color.Red;
+                                        }
+                                        iCtrlCouter++;
+                                        AddLog("Ocr result:" + ocr.Text);
+                                        ocr.Click += new EventHandler(ocr_Click);
+                                        panelThumb.Controls.Add(ocr);
+                                        Application.DoEvents();
+                                    }
+                                }
+                            }
+                            else
+                                AddLog("Croper failed");
+                            AddLog("End for:" + d.getFileBmp());
+
+                            // string filter. I will remove from arString all strings the will be duplicated on the same area croped
+                            int iIdx1 = -1, iIdx2 = -1;
+                            do
+                            {
+                                crp.GetRectInRect(ref iIdx1, ref iIdx2);
+                                if (iIdx1 >= 0 && iIdx2 >= 0)   // rectangles intersected found ?
+                                {
+                                    // get the strings of intersected rectangles
+                                    String sStr1 = (String)arString[iIdx1];
+                                    String sStr2 = (String)arString[iIdx2];
+                                    // the strings are present in both rectagles ?
+                                    if (sStr1.LastIndexOf(sStr2) >= 0)
+                                    {   // I will use only the longer string
+                                        // cut the smaller string
+                                        if (sStr1.Length > sStr2.Length)
+                                        {
+                                            AddLog("String Removed:" + sStr2);
+                                            arString.RemoveAt(iIdx2);
+                                            crp.RemoveRect(iIdx2);
+                                        }
+                                        else
+                                        {
+                                            AddLog("String Removed:" + sStr1);
+                                            arString.RemoveAt(iIdx1);
+                                            crp.RemoveRect(iIdx1);
+                                        }
+                                    }
+                                    else
+                                        iIdx1 = -1; // exit loop
+                                }
+                            } while (iIdx1 >= 0 && iIdx2 >= 0);
+                            // prepare the strings to send. each string has a dobule cr lf chars
+                            sText = "";
+                            foreach (String sStr in arString)
+                                sText += sStr;
+
+                            if (bImagesCroped && sText == String.Empty)
+                                sText = modi.Start(d.getFolder() + "\\0.bmp", d.getLangFrom());
+                        }
+                        else
+                        {
+                            sText = modi.Start(d.getFolder() + "\\0.bmp", d.getLangFrom());
+                        }
+                        
+                        GoogleTranslator gt = new GoogleTranslator();
+                        String sTran="";
+                        try
+                        {
+                            sTran = gt.Translate(sText, new TranslateDir(d.getLangFrom(), d.getLangTo()));
+                        }
+                        catch (Exception ex)
+                        {
+                            AddLog(String.Format("Exception:{0}", ex.Message));
+                        }
+                        d.setProcessCompleted(sText,sTran);
+                        
+                        
+                        /*try
+                        {
+                            if (sText != String.Empty)
+                            {
+                                txtLanSrc.Text = d.getLangFrom();
+                                txLantDest.Text = d.getLangTo();
+                                txtSrc.Text = sText;
+                                Application.DoEvents();
+                                butChangeLang_Click(null, null);
+                                butGetTextTranslated_Click(null, null);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            AddLog(String.Format("Exception:{0}", ex.Message));
+                        }
+                        d.setProcessCompleted(txtSrc.Text, txtDest.Text);*/
+
+                        Application.DoEvents();
+
+                        AddLog("ALL PROCESS COMPLETED *************");
+                        Application.DoEvents();
+
+                        crp = null;
+                    }
+                    else if (d.getCanDelete())
+                    {
+                        d = null;
+                    }
+                }
+                if (bCanClear)
+                    _arrDataProc.Clear();
+                timer1.Enabled = true;
+            }
+            catch (Exception ex)
+            {   
+                AddLog("Exception:"+ex.Message);
+            }
+            this.Cursor = Cursors.Default;
+            timer1.Enabled = true;
+        }
+
+        private void butClearLog_Click(object sender, EventArgs e)
+        {
+            lstLog.Items.Clear();
+        }
+
+        private void lstLog_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try{            
+                Clipboard.SetDataObject(lstLog.Text, true);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void butGetTextTranslated_Click_1(object sender, EventArgs e)
+        {
+            String sTran = "";
+            String sSource = txtSrc.Text;
+            if (radTrans.Checked)
+            {
+                TranslatedTranslator tr = new TranslatedTranslator();
+                try
+                {
+                    sTran = tr.Translate(sSource, new TranslateDir(txtLanSrc.Text, txLantDest.Text));
+                }
+                catch (Exception ex)
+                {
+                    AddLog(String.Format("Exception:{0}", ex.Message));
+                }
+            }
+            else
+            {
+                GoogleTranslator tr = new GoogleTranslator();
+                try
+                {
+                    sTran = tr.Translate(sSource, new TranslateDir(txtLanSrc.Text, txLantDest.Text));
+                }
+                catch (Exception ex)
+                {
+                    AddLog(String.Format("Exception:{0}", ex.Message));
+                }
+            }
+            txtDest.Text = sTran;
+        }
+        
+    }
+    
+}

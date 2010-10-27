@@ -1,0 +1,480 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Emgu.CV.UI</name>
+    </assembly>
+    <members>
+        <member name="T:Emgu.CV.UI.HistogramCtrl">
+            <summary>
+            The control that is used to display histogram
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.HistogramCtrl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramCtrl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramCtrl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramCtrl.#ctor">
+            <summary>
+            Construct a histogram control
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramCtrl.AddHistogram(System.String,System.Drawing.Color,Emgu.CV.Histogram)">
+            <summary>
+            Add a plot of the 1D histogram. You should call the Refresh() function to update the control after all modification is complete.
+            </summary>
+            <param name="name">The name of the histogram</param>
+            <param name="color">The drawing color</param>
+            <param name="histogram">The 1D histogram to be drawn</param>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramCtrl.GenerateHistograms(Emgu.CV.IImage,System.Int32)">
+            <summary>
+            Generate histograms for the image. One histogram is generated for each color channel.
+            You will need to call the Refresh function to do the painting afterward.
+            </summary>
+            <param name="image">The image to retrieve histogram from</param>
+            <param name="numberOfBins">The number of bins for each histogram</param>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramCtrl.ClearHistogram">
+            <summary>
+            Remove all the histogram from the control. You should call the Refresh() function to update the control after all modification is complete.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramCtrl.Refresh">
+            <summary>
+            Paint the histogram
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.HistogramCtrl.ZedGraphControl">
+            <summary>
+            Get the zedgraph control from this histogram control
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.UI.OperationStackView">
+            <summary>
+            A user control to display the operation stack
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.OperationStackView.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.OperationStackView.DisplayOperationStack(System.Collections.Generic.Stack{Emgu.Util.Operation})">
+            <summary>
+            Display the operation stack
+            </summary>
+            <param name="operationStack">The operation stack to be displayed</param>
+        </member>
+        <member name="F:Emgu.CV.UI.OperationStackView.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.OperationStackView.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Emgu.CV.UI.OperationStackView.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.OperationStackView.Language">
+            <summary>
+            Set the programming language for this Operation Stack View
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.UI.ParameterInputDialog">
+            <summary>
+            The dialog to ask user for parameters to the specific method
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ParameterInputDialog._paramValue">
+            <summary>
+            The List of parameter values
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ParameterInputDialog._paramInfo">
+            <summary>
+            The array of parameter info
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ParameterInputDialog.ParseParameterName(System.Reflection.ParameterInfo)">
+            <summary>
+            Get the name of the parameter
+            </summary>
+            <param name="param">the parameter</param>
+            <returns>the name of the parameter</returns>
+        </member>
+        <member name="M:Emgu.CV.UI.ParameterInputDialog.CreatePanelForParameter(System.Reflection.ParameterInfo,System.Object)">
+            <summary>
+            Create a panel for the specific parameter
+            </summary>
+            <param name="param">the parameter to create panel for</param>
+            <param name="defaultValue">The default value for the parameter</param>
+            <returns>the panel</returns>
+        </member>
+        <member name="M:Emgu.CV.UI.ParameterInputDialog.GetParams(System.Reflection.MethodInfo,System.Object[])">
+            <summary>
+            Obtain the parameters for <paramref name="method"/> and put them in <paramref name="paramList"/>
+            </summary>
+            <param name="method">The method to Obtain parameters from</param>
+            <param name="defaultParameterValues">The list that will be used as the storage for the retrieved parameters, if it contains elements, those elements will be used as default value</param>
+            <returns>True if successed, false otherwise</returns>
+        </member>
+        <member name="F:Emgu.CV.UI.ParameterInputDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ParameterInputDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Emgu.CV.UI.ParameterInputDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ParameterInputDialog.Parameters">
+            <summary>
+            Get the parameters obtained by this parameter input dialog
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ParameterInputDialog.ParamInputPanel.GetValue">
+            <summary>
+            Return the value of the parameter input panel, if unable to retrieve value, return null
+            </summary>
+            <returns>The value of the parameter input panel, if unable to retrieve value, return null</returns>
+        </member>
+        <member name="P:Emgu.CV.UI.ParameterInputDialog.ParamInputPanel.GetParamFunction">
+            <summary>
+            The function used to obtain the parameter from this input panel
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.UI.ImageProperty">
+            <summary>
+            The control to display image properties
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageProperty.#ctor">
+            <summary>
+            Create a ImageProperty control
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageProperty.SetOperationStack(System.Collections.Generic.Stack{Emgu.Util.Operation})">
+            <summary>
+            Set the description of the operation stack
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ImageProperty.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageProperty.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageProperty.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageProperty.ImageBox">
+            <summary>
+            The parent imagebox for this property panel
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageProperty.TypeOfColor">
+            <summary>
+            Set the Type of the color
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageProperty.MousePositionOnImage">
+            <summary>
+            Set the mouse position over the image
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageProperty.ColorIntensity">
+            <summary>
+            Set the color intensity of the pixel on the image where is mouse is at
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageProperty.TypeOfDepth">
+            <summary>
+            Set the Depth of the image
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageProperty.FramesPerSecondText">
+            <summary>
+            Set the frame rate
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.UI.HistogramViewer">
+            <summary>
+            A view for histogram
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramViewer.#ctor">
+            <summary>
+            A histogram viewer
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramViewer.Show(Emgu.CV.IImage)">
+            <summary>
+            Display the histograms of the specific image
+            </summary>
+            <param name="image">The image to retrieve hostigram from</param>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramViewer.Show(Emgu.CV.IImage,System.Int32)">
+            <summary>
+            Display the histograms of the specific image
+            </summary>
+            <param name="image">The image to retrieve hostigram from</param>
+            <param name="numberOfBins">The numebr of bins in the histogram</param>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramViewer.Show(Emgu.CV.Histogram,System.String)">
+            <summary>
+            Display the specific histogram
+            </summary>
+            <param name="hist">The histogram to be displayed</param>
+            <param name="title">The name of the histogram</param>
+        </member>
+        <member name="F:Emgu.CV.UI.HistogramViewer.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramViewer.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Emgu.CV.UI.HistogramViewer.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.HistogramViewer.HistogramCtrl">
+            <summary>
+            Get the histogram control of this viewer
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.UI.ImageViewer">
+            <summary>
+            The Image viewer that display IImage
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ImageViewer.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageViewer.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageViewer.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageViewer.#ctor">
+            <summary>
+            Create an ImageViewer
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageViewer.#ctor(Emgu.CV.IImage)">
+            <summary>
+            Create an ImageViewer from the specific <paramref name="img"/>
+            </summary>
+            <param name="image">The image to be displayed in this viewer</param>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageViewer.#ctor(Emgu.CV.IImage,System.String)">
+            <summary>
+            Create an ImageViewer from the specific <paramref name="img"/>, using <paramref name="imageName"/> as window name
+            </summary>
+            <param name="image">The image to be displayed</param>
+            <param name="imageName">The name of the image</param>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageViewer.Show(Emgu.CV.IImage)">
+            <summary>
+            Create a ImageViewer with the specific image and show it.
+            </summary>
+            <param name="image">The image to be displayed in ImageViewer</param>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageViewer.Show(Emgu.CV.IImage,System.String)">
+            <summary>
+            Create a ImageViewer with the specific image and show it.
+            </summary>
+            <param name="image">The image to be displayed in ImageViewer</param>
+            <param name="windowName">The name of the window</param>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageViewer.Image">
+            <summary>
+            Get or Set the image in this ImageViewer
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.UI.ImageBox">
+            <summary>
+            An image box is a user control that is similar to picture box, but display Emgu CV IImage and provides enhenced functionalities.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ImageBox._typeToToolStripMenuItemsDictionary">
+            <summary>
+            A cache to store the ToolStripMenuItems for different types of images
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ImageBox._timerStartTime">
+            <summary>
+            timer used for caculating the frame rate
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ImageBox._imageReceivedSinceCounterStart">
+            <summary>
+            one of the parameters used for caculating the frame rate
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageBox.#ctor">
+            <summary>
+            Create a ImageBox
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageBox.PushOperation(Emgu.Util.Operation)">
+            <summary>
+            Push the specific operation onto the stack
+            </summary>
+            <param name="operation">The operation to be pushed onto the stack</param>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageBox.ClearOperation">
+            <summary>
+            Remove all the operations from the stack
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageBox.PopOperation">
+            <summary>
+            Remove the last added operation from the stack
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageBox.onMouseMove(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Used for tracking the mouse position on the image
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageBox.Dispose">
+            <summary>
+            Release the this Imagebox and all memory associate with it.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ImageBox.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageBox.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Emgu.CV.UI.ImageBox.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageBox.FunctionalMode">
+            <summary>
+            Get or set the functional mode for the ImageBox
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageBox.Image">
+            <summary>
+            Set the image for this image box
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.ImageBox.DisplayedImage">
+            <summary>
+            The image that is being displayed. It's the Image following by some user defined image operation
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.UI.ImageBox.FunctionalModeOption">
+            <summary>
+            The display mode for ImageBox
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum">
+            <summary>
+            The ImageBox is only used for displaying image. 
+            No right-click menu available
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.ImageBox.FunctionalModeOption.Everything">
+            <summary>
+            This is the ImageBox with all functions enabled.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.UI.PropertyDialog">
+            <summary>
+            A dialog to display the property of an image
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.UI.PropertyDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.PropertyDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Emgu.CV.UI.PropertyDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.UI.PropertyDialog.#ctor(Emgu.CV.UI.ImageBox)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.UI.PropertyDialog.ImagePropertyPanel">
+            <summary>
+            Get the image property panel
+            </summary>
+        </member>
+    </members>
+</doc>

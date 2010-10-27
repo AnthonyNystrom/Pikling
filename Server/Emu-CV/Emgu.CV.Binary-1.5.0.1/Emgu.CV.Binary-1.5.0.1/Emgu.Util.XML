@@ -1,0 +1,421 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Emgu.Util</name>
+    </assembly>
+    <members>
+        <member name="T:Emgu.Util.TypeEnum.OS">
+            <summary>
+            Type of operating system
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.OS.Windows">
+            <summary>
+            Windows
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.OS.Linux">
+            <summary>
+            Linux
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.TypeEnum.Runtime">
+            <summary>
+            The runtime environment
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.Runtime.DotNet">
+            <summary>
+            .Net runtime
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.Runtime.Mono">
+            <summary>
+            Mono runtime
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.TypeEnum.ProgrammingLanguage">
+            <summary>
+            The type of Programming languages
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.ProgrammingLanguage.CSharp">
+            <summary>
+            C#
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.ProgrammingLanguage.CPlusPlus">
+            <summary>
+            C++
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.PinnedArray`1">
+            <summary>
+            A Pinnned array of type <paramref name="T"/>
+            </summary>
+            <typeparam name="T">The type of the array</typeparam>
+        </member>
+        <member name="T:Emgu.Util.DisposableObject">
+            <summary>
+            An abstract class that wrap around a disposable object
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.DisposableObject._disposed">
+            <summary> Track whether Dispose has been called. </summary>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.Dispose">
+            <summary>
+            The dispose function that implements IDisposable interface
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.Dispose(System.Boolean)">
+            <summary> 
+             Release the all the memory associate with this object
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.DisposeObject">
+            <summary>
+            Function use to release _ptr object
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.Finalize">
+            <summary>
+            Destructor
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.PinnedArray`1.#ctor(System.Int32)">
+            <summary>
+            Create a Pinnned array of type <paramref name="T"/>
+            </summary>
+            <param name="size">The size of the array</param>
+        </member>
+        <member name="M:Emgu.Util.PinnedArray`1.AddrOfPinnedObject">
+            <summary>
+            Get the address of the pinned array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Emgu.Util.PinnedArray`1.DisposeObject">
+            <summary>
+            Release the GCHandle
+            </summary>
+        </member>
+        <member name="P:Emgu.Util.PinnedArray`1.Array">
+            <summary>
+            Get the array
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.Operation">
+            <summary>
+            An operation contains the MethodInfo and the methods parameters. It provides a way to invoke a specific method with the specific parameters. 
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.ICodeGenerable">
+            <summary>
+            Implement this interface if the object can output code to generate it self.
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.ICodeGenerable.ToCode(Emgu.Util.TypeEnum.ProgrammingLanguage)">
+            <summary>
+            Return the code to generate the object itself from the specific language
+            </summary>
+            <param name="language">The programming language to output code</param>
+            <returns>The code to generate the object from the specific language</returns>
+        </member>
+        <member name="M:Emgu.Util.Operation.#ctor(System.Reflection.MethodInfo,System.Object[])">
+            <summary>
+            Craete an operation using the specific method and parameters
+            </summary>
+            <param name="mi">The method info</param>
+            <param name="parameters">The parameters for this method</param>
+        </member>
+        <member name="M:Emgu.Util.Operation.InvokeMethod(System.Object)">
+            <summary>
+            Call the specific method with the specific parameters on the provided <paramref name="instance"/>
+            </summary>
+            <param name="instance">The instance to call the method</param>
+            <returns></returns>
+        </member>
+        <member name="M:Emgu.Util.Operation.ToString">
+            <summary>
+            Represent this operation as a string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Emgu.Util.Operation.ToCode(Emgu.Util.TypeEnum.ProgrammingLanguage)">
+            <summary>
+            Represent this operation as code
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Emgu.Util.Operation.Method">
+            <summary>
+            The MethodInfo
+            </summary>
+        </member>
+        <member name="P:Emgu.Util.Operation.Parameters">
+            <summary>
+            The parameters for this method
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.UnmanagedObject">
+            <summary>
+            An abstract class that wrap around an unmanaged object
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.UnmanagedObject._ptr">
+            <summary>
+            A pointer to the unmanaged object
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.UnmanagedObject.op_Implicit(Emgu.Util.UnmanagedObject)~System.IntPtr">
+            <summary>
+            Implicit operator for IntPtr
+            </summary>
+            <param name="obj">The UnmanagedObject</param>
+            <returns>The unmanaged pointer for this object</returns>
+        </member>
+        <member name="P:Emgu.Util.UnmanagedObject.Ptr">
+            <summary>
+            Pointer to the unmanaged object
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.Platform">
+            <summary>
+            Provide information for the platform which is using 
+            </summary>
+        </member>
+        <member name="P:Emgu.Util.Platform.OperationSystem">
+            <summary>
+            The operating system that is using
+            </summary>
+        </member>
+        <member name="P:Emgu.Util.Platform.Runtime">
+            <summary>
+            Get the current runtime environment
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.Toolbox">
+            <summary>
+            utilities functions for Emgu
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.IEnumConvertor``2(System.Collections.Generic.IEnumerable{``0},System.Converter{``0,``1})">
+            <summary>
+            Convert on enumeration to another using the specific convertor
+            </summary>
+            <typeparam name="Tin">The input enumerator type</typeparam>
+            <typeparam name="Tout">The output enumerator type</typeparam>
+            <param name="inputs">the input enumerator</param>
+            <param name="convertor">the convertor that convert one enumeration to another</param>
+            <returns>An enumerator of <paramref name="Tout"/></returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlSerialize``1(``0)">
+            <summary>
+            Convert an object to an xml document
+            </summary>
+            <typeparam name="T">The type of the object to be converted</typeparam>
+            <param name="o">The object to be serialized</param>
+            <returns>An xml document that represents the object</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlSerialize``1(``0,System.Type[])">
+            <summary>
+            Convert an object to an xml document
+            </summary>
+            <typeparam name="T">The type of the object to be converted</typeparam>
+            <param name="o">The object to be serialized</param>
+            <param name="knownTypes">Other types that it must known ahead to serialize the object</param>
+            <returns>An xml document that represents the object</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlDeserialize``1(System.Xml.XmlDocument)">
+            <summary>
+            Convert an xml document to an object
+            </summary>
+            <typeparam name="T">The type of the object to be converted to</typeparam>
+            <param name="xDoc">The xml document</param>
+            <returns>The object representation as a result of the deserialization of the xml document</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlDeserialize``1(System.Xml.XmlDocument,System.Type[])">
+            <summary>
+            Convert an xml document to an object
+            </summary>
+            <typeparam name="T">The type of the object to be converted to</typeparam>
+            <param name="xDoc">The xml document</param>
+            <param name="knownTypes">Other types that it must known ahead to deserialize the object</param>
+            <returns>The object representation as a result of the deserialization of the xml document</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlStringDeserialize``1(System.String)">
+            <summary>
+            Convert an xml string to an object
+            </summary>
+            <typeparam name="T">The type of the object to be converted to</typeparam>
+            <param name="xmlString">The xml document as a string</param>
+            <returns>The object representation as a result of the deserialization of the xml string</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.FileToString(System.String,System.Char)">
+            <summary>
+            Read a text file to an array of string, each row are seperated using by the input seperator
+            </summary>
+            <param name="fileName">The text file to read from</param>
+            <param name="seperator">The row seperator</param>
+            <returns></returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.MergeBytes(System.Byte[],System.Byte[])">
+            <summary>
+            Merges two byte vector into one
+            </summary>
+            <param name="a">the first byte vector to be merged</param>
+            <param name="b">the second byte vector to be merged</param>
+            <returns></returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.ExecuteCmd(System.String,System.String)">
+            <summary>
+            Call a command from command line
+            </summary>
+            <param name="execFileName">The name of the executable</param>
+            <param name="arguments">The arguments to the executeable</param>
+            <returns>The standard output</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.GetBaseType(System.Type,System.String)">
+            <summary>
+            Use reflection to find the base type. If such type do not exist, null is returned
+            </summary>
+            <param name="currentType">The type to search from</param>
+            <param name="baseclassName">The name of the base class to search</param>
+            <returns>The base type</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.ToBytes``1(``0[])">
+            <summary>
+            Convert some generic vector to vector of Bytes
+            </summary>
+            <typeparam name="D">type of the input vector</typeparam>
+            <param name="data">array of data</param>
+            <returns>the byte vector</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.CopyVector``1(``0[],System.IntPtr)">
+            <summary>
+            Copy a generic vector to the unmanaged memory
+            </summary>
+            <typeparam name="D">The data type of the vector</typeparam>
+            <param name="src">The source vector</param>
+            <param name="dest">Pointer to the destination unmanaged memory</param>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.CopyMatrix``1(``0[][],System.IntPtr)">
+            <summary>
+            Copy a jagged two dimensional array to the unmanaged memory
+            </summary>
+            <typeparam name="D">The data type of the jagged two dimensional</typeparam>
+            <param name="src">The src array</param>
+            <param name="dest">Pointer to the destination unmanaged memory</param>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.CopyMatrix``1(System.IntPtr,``0[][])">
+            <summary>
+            Copy a jagged two dimensional array from the unmanaged memory
+            </summary>
+            <typeparam name="D">The data type of the jagged two dimensional</typeparam>
+            <param name="src">The src array</param>
+            <param name="dest">Pointer to the destination unmanaged memory</param>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.memcpy(System.IntPtr,System.IntPtr,System.Int32)">
+            <summary>
+            memcpy function
+            </summary>
+            <param name="dest">the destination of memory copy</param>
+            <param name="src">the source of memory copy</param>
+            <param name="len">the number of bytes to be copied</param>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.LoadLibrary(System.String)">
+            <summary>
+            Maps the specified executable module into the address space of the calling process.
+            </summary>
+            <param name="dllname">The name of the dll</param>
+            <returns>The handle to the library</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.FreeLibrary(System.IntPtr)">
+            <summary>
+            Decrements the reference count of the loaded dynamic-link library (DLL). When the reference count reaches zero, the module is unmapped from the address space of the calling process and the handle is no longer valid
+            </summary>
+            <param name="handle">The handle to the library</param>
+            <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.SetDllDirectory(System.String)">
+            <summary>
+            Adds a directory to the search path used to locate DLLs for the application
+            </summary>
+            <param name="path">The directory to be searched for DLLs</param>
+            <returns>True if success</returns>
+        </member>
+        <member name="T:Emgu.Util.Toolbox.Action`2">
+            <summary>
+            An Action that accepts two input and returns nothing
+            </summary>
+            <typeparam name="TInput1"></typeparam>
+            <typeparam name="TInput2"></typeparam>
+            <param name="o1">The first input parameter</param>
+            <param name="o2">The second input parameter</param>
+        </member>
+        <member name="T:Emgu.Util.Toolbox.Action`3">
+            <summary>
+            An Action that accepts three input and returns nothing
+            </summary>
+            <typeparam name="TInput1"></typeparam>
+            <typeparam name="TInput2"></typeparam>
+            <typeparam name="TInput3"></typeparam>
+            <param name="o1">The first input parameter</param>
+            <param name="o2">The second input parameter</param>
+            <param name="o3">The third input parameter</param>
+        </member>
+        <member name="T:Emgu.Util.Toolbox.Action`4">
+            <summary>
+            An Action that accepts fourth input and returns nothing
+            </summary>
+            <typeparam name="TInput1"></typeparam>
+            <typeparam name="TInput2"></typeparam>
+            <typeparam name="TInput3"></typeparam>
+            <typeparam name="TInput4"></typeparam>
+            <param name="o1">The first input parameter</param>
+            <param name="o2">The second input parameter</param>
+            <param name="o3">The third input parameter</param>
+            <param name="o4">The fourth input parameter</param>
+        </member>
+        <member name="T:Emgu.Util.Toolbox.Func`3">
+            <summary>
+            Delegate similar to that in .Net 3.5
+            </summary>
+            <typeparam name="TInput1"></typeparam>
+            <typeparam name="TInput2"></typeparam>
+            <typeparam name="TOutput"></typeparam>
+            <param name="o1"></param>
+            <param name="o2"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Emgu.Util.Toolbox.Func`4">
+            <summary>
+            Delegate similar to that in .Net 3.5
+            </summary>
+            <typeparam name="TInput1"></typeparam>
+            <typeparam name="TInput2"></typeparam>
+            <typeparam name="TInput3"></typeparam>
+            <typeparam name="TOutput"></typeparam>
+            <param name="o1"></param>
+            <param name="o2"></param>
+            <param name="o3"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Emgu.Util.Toolbox.Func`5">
+            <summary>
+            Delegate similar to that in .Net 3.5
+            </summary>
+            <typeparam name="TInput1"></typeparam>
+            <typeparam name="TInput2"></typeparam>
+            <typeparam name="TInput3"></typeparam>
+            <typeparam name="TInput4"></typeparam>
+            <typeparam name="TOutput"></typeparam>
+            <param name="o1"></param>
+            <param name="o2"></param>
+            <param name="o3"></param>
+            <param name="o4"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,88 @@
+﻿List of Not Yet Implemented features and rendering issues
+This is a negative list - everything not mentioned here should work
+
+
+Stroke
+
+	*	Start and end cap differs
+		NYI
+
+	*	Stroke with non SolidColorBrush
+		NYI
+
+
+Fill
+
+	*	Tiling
+		NYI
+		
+	* LinearGradientBrush
+		- Repeat and Reflect
+		NYI
+
+	* RadialGradientBrush
+		NYI
+
+
+Glyphs
+	*	Indices, IsSideways, StyleSimulations
+		- Repeat and Reflect
+		NYI
+
+
+Opacity Masks
+	*	NYI
+
+
+Geometry
+
+	*	ArcSegment
+		- Exact half circles rendes wrong direction
+		- RotationAngle != 0 leads to incorrect results
+		Check with QLMB-01
+		TODO: Rewrite Beziér generation code
+		Workaround: DevHelper.FlattenArcSegments = true;
+		
+	*	PolyQuadraticBezierSegment
+		- QLMB-01 figure at bottom center failed
+		Chech with QLMB-01
+		Workaround: DevHelper.FlattenPolyQuadraticBezierSegment = true;
+		(done)
+
+
+Resources
+
+	*	Relative navigation to part
+		NYI
+
+
+Colors
+	*	Profiles
+		- Fill = "ContextColor /Resources/uswebuncoated.icc 1.0,1.000,0.000,0.000,0.000"
+		NYI
+
+
+Images
+	*	Several indexed color formats, TIFF
+		NYI
+
+
+Security
+	*	Digital signatures
+		NYI
+
+
+Print Tickets
+	*	(everything)
+		NYI
+
+
+PDF Optimization
+
+	*	Cache for TransparencyGroup and ExtGStyle
+		NYI
+
+	*	Resource caching
+		Images must be reused
+		NYI
+

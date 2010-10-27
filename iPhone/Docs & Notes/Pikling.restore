@@ -1,0 +1,21 @@
+#!/bin/bash                                                                     
+#                                                                               
+# Esegue il ripristino del progetto pikling dal pendrive                        
+#                                                                               
+
+PROGETTO="Pikling"
+
+# Cerco il nome del pendrive da cui fare il restore
+DEVICE=`mount | grep nodev | grep -v journaled`
+PERCORSO=${DEVICE#*"on "}
+PERCORSO=${PERCORSO%" ("*}
+
+echo "Restore $PROGETTO da $PERCORSO"
+
+# Verifico l'esistenza della directory sorgente e destinazione
+if [ ! -d "${PERCORSO}/SVN/${PROGETTO}" ]; then echo "Directory ${PERCORSO}/SVN non trovata"; exit 1; fi
+if [ ! -d ~/SVN ]; then echo "Directory ~/SVN non trovata"; exit 1; fi
+
+rsync -H -a --delete -v "${PERCORSO}/SVN/${PROGETTO}" ~/SVN/
+
+exit 0

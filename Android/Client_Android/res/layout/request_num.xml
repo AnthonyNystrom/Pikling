@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbarSize="12dip">
+<RelativeLayout
+android:id="@+id/widget29"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+<LinearLayout
+android:id="@+id/widget28"
+android:layout_width="300px"
+android:orientation="vertical"
+android:layout_alignParentTop="true"
+android:layout_centerHorizontal="true"
+android:layout_height="fill_parent">
+<TextView android:id="@+id/TextView01" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="2px"></TextView>
+
+
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_gravity="center_horizontal">
+
+<EditText android:text="EditText01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/edNum"></EditText>
+
+</LinearLayout>
+
+
+
+<RadioGroup android:id="@+id/RadioGroup01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:orientation="horizontal"><RadioButton android:id="@+id/RadioButton01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:checked="true" android:layout_marginRight="40dip"></RadioButton><RadioButton android:id="@+id/RadioButton01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal"></RadioButton></RadioGroup><LinearLayout android:id="@+id/LinearLayout02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal"><LinearLayout android:id="@+id/LinearLayout02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal"><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/it" android:id="@+id/imgSrc" android:layout_marginRight="40dip"></ImageView>
+</LinearLayout><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imgDst" android:src="@drawable/en"></ImageView></LinearLayout></LinearLayout>
+</RelativeLayout>
+
+
+</ScrollView>

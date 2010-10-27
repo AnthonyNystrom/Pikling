@@ -1,0 +1,37 @@
+RIM-COD-SHA1-4: b4 c4 4f 63 07 b3 66 fa 7e ff 9a 33 12 e1 be 08 a7 68 98 44
+RIM-COD-SHA1-3: 0e ff 2e 9f 79 a2 fd f6 cf 9b 94 f4 4e 28 e1 4a ad 28 91 a7
+RIM-COD-SHA1-2: 58 f1 3e 0a 1e dc b8 3c f4 b3 9c d9 dc b7 f2 8b 9b 33 27 b1
+RIM-COD-SHA1-1: b5 65 0b 7e 1a 79 2d f7 af 44 25 4a fb 46 71 d9 f4 0b aa 37
+RIM-MIDlet-Flags-1: 0
+MIDlet-Jar-Size: 818505
+MIDlet-Name: Pikling
+MIDlet-Jar-URL: Pikling.jar
+MicroEdition-Configuration: CLDC-1.1
+RIM-COD-URL-7: Pikling-7.cod
+RIM-COD-Module-Dependencies: net_rim_cldc,net_rim_bbapi_invoke,net_rim_xml,net_rim_xml_org,net_rim_pdap
+RIM-COD-URL-6: Pikling-6.cod
+RIM-COD-URL-5: Pikling-5.cod
+RIM-COD-URL-4: Pikling-4.cod
+RIM-COD-URL-3: Pikling-3.cod
+RIM-COD-URL-2: Pikling-2.cod
+RIM-COD-URL-1: Pikling-1.cod
+RIM-COD-Size-7: 37816
+RIM-COD-Size-6: 50124
+RIM-COD-Size-5: 56040
+RIM-COD-Size-4: 50124
+RIM-COD-Size-3: 52744
+RIM-COD-Module-Name: Pikling
+RIM-COD-Size-2: 54716
+RIM-COD-Size-1: 56844
+RIM-COD-SHA1: 24 3a 72 49 90 ad 1b 20 9f 2d ed 5b ef 31 b1 18 49 a1 46 a9
+RIM-COD-Size: 61376
+MicroEdition-Profile: MIDP-2.0
+MIDlet-Vendor: <unknown>
+MIDlet-1: ,res/icon.png,
+RIM-COD-URL: Pikling.cod
+Manifest-Version: 1.0
+MIDlet-Version: 0.0
+RIM-COD-SHA1-7: 87 99 eb c4 36 8a 0b 60 aa 6b 84 ae 5b 98 11 a1 6e 53 6d 01
+RIM-COD-Creation-Time: 1245880979
+RIM-COD-SHA1-6: 6e 80 a5 00 34 53 a8 db bd 08 1a 1b cd ee 53 6b 3d ed 90 d9
+RIM-COD-SHA1-5: d2 b9 c0 b8 86 1e 12 2f e6 40 10 9f 20 be 61 ca a8 69 8f a6

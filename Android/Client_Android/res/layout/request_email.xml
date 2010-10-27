@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbarSize="12dip">
+<RelativeLayout
+android:id="@+id/widget29"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+<LinearLayout
+android:id="@+id/widget28"
+android:layout_width="300px"
+android:orientation="vertical"
+android:layout_alignParentTop="true"
+android:layout_centerHorizontal="true"
+android:layout_height="fill_parent">
+<TextView android:id="@+id/TextView01" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="2px"></TextView>
+
+
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_gravity="center_horizontal">
+
+<EditText android:text="EditText01" android:layout_height="wrap_content" android:id="@+id/edEmail" android:layout_width="fill_parent"></EditText>
+
+</LinearLayout>
+
+
+</LinearLayout>
+</RelativeLayout>
+</ScrollView>
