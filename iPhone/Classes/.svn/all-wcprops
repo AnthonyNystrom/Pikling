@@ -1,0 +1,155 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/pikling/!svn/ver/90/pikling/iPhone/Classes
+END
+MyViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/pikling/!svn/ver/82/pikling/iPhone/Classes/MyViewController.m
+END
+FlipsideView.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/pikling/!svn/ver/57/pikling/iPhone/Classes/FlipsideView.h
+END
+ResultDialog.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/pikling/!svn/ver/57/pikling/iPhone/Classes/ResultDialog.h
+END
+FlipsideViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/pikling/!svn/ver/83/pikling/iPhone/Classes/FlipsideViewController.h
+END
+FlipsideView.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/pikling/!svn/ver/57/pikling/iPhone/Classes/FlipsideView.m
+END
+ResultDialog.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/pikling/!svn/ver/82/pikling/iPhone/Classes/ResultDialog.m
+END
+FlipsideViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/pikling/!svn/ver/89/pikling/iPhone/Classes/FlipsideViewController.m
+END
+LanguagesViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/pikling/!svn/ver/1/pikling/iPhone/Classes/LanguagesViewController.h
+END
+TextAlertView.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/pikling/!svn/ver/57/pikling/iPhone/Classes/TextAlertView.h
+END
+UIImageExtras.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/pikling/!svn/ver/83/pikling/iPhone/Classes/UIImageExtras.h
+END
+LanguagesViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/pikling/!svn/ver/73/pikling/iPhone/Classes/LanguagesViewController.m
+END
+languages.plist
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/pikling/!svn/ver/1/pikling/iPhone/Classes/languages.plist
+END
+TextAlertView.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/pikling/!svn/ver/57/pikling/iPhone/Classes/TextAlertView.m
+END
+UIImageExtras.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/pikling/!svn/ver/83/pikling/iPhone/Classes/UIImageExtras.m
+END
+pikAppDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/pikling/!svn/ver/89/pikling/iPhone/Classes/pikAppDelegate.h
+END
+MainView.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/pikling/!svn/ver/57/pikling/iPhone/Classes/MainView.h
+END
+WebServices.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/pikling/!svn/ver/79/pikling/iPhone/Classes/WebServices.h
+END
+TwitterSettingsViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/pikling/!svn/ver/14/pikling/iPhone/Classes/TwitterSettingsViewController.h
+END
+MainViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/pikling/!svn/ver/85/pikling/iPhone/Classes/MainViewController.h
+END
+MyViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/pikling/!svn/ver/1/pikling/iPhone/Classes/MyViewController.h
+END
+MainView.m
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/pikling/!svn/ver/57/pikling/iPhone/Classes/MainView.m
+END
+pikAppDelegate.m
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/pikling/!svn/ver/90/pikling/iPhone/Classes/pikAppDelegate.m
+END
+WebServices.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/pikling/!svn/ver/82/pikling/iPhone/Classes/WebServices.m
+END
+TwitterSettingsViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/pikling/!svn/ver/80/pikling/iPhone/Classes/TwitterSettingsViewController.m
+END
+MainViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/pikling/!svn/ver/86/pikling/iPhone/Classes/MainViewController.m
+END
