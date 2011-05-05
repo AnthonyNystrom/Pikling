@@ -179,7 +179,7 @@
 {
 	return 1;
 }
-
+/*
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
     return @"";
@@ -189,7 +189,7 @@
 {
     return @"";
 }
-
+*/
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {

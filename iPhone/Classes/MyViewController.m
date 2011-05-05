@@ -89,6 +89,9 @@
 			case 2:
 				bannerString=NSLocalizedString(@"Results provided by Yahoo! Babel Fish",@"");
 				break;
+			case 3:
+				bannerString=NSLocalizedString(@"Results provided by Microsoft Translator",@"");
+				break;
 			default:
 				bannerString=NSLocalizedString(@"7touch group, inc.",@"");
 				break;
@@ -150,7 +153,7 @@
 
 - (void)visit7Touch:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://m.7touchgroup.com"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://blog.7touchgroup.com"]];
 }
 
 

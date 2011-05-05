@@ -17,6 +17,9 @@
 #import "LanguagesViewController.h"
 #import "TwitterSettingsViewController.h"
 
+#import "SA_OAuthTwitterEngine.h"
+#import "SA_OAuthTwitterController.h"
+
 //#import "AudioToolbox/AudioServices.h"
 
 //#define DEBUG_BUTTON
@@ -91,7 +94,6 @@
 		[self show_flag:dropButton];
 		dropButton = nil;
 	}
-	
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,12 +140,26 @@
 
 #pragma mark -
 
+#define kOAuthConsumerKey			@"7kvogUtgrqC85dwzO68Ayg"
+#define kOAuthConsumerSecret		@"rIZXOhnX4NctCH396ZU132IT1574Tnf7LyGQp1DFKA"
+
 //
 // Attaccato ad un thread per l'invio dello stato su twitter
 //
 - (void)sendTwitterStatus:(id)sender
 {
-	[TwitterSettingsViewController sendTwitterStatus:(NSString *)sender onIpAddr:@"69.21.114.130"];
+	NSAutoreleasePool* pool = [NSAutoreleasePool new];   
+
+	SA_OAuthTwitterEngine *	_engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate: self];
+	_engine.consumerKey = kOAuthConsumerKey;
+	_engine.consumerSecret = kOAuthConsumerSecret;	
+
+	if( [_engine isAuthorized] ) {
+		[_engine performSelectorOnMainThread:@selector(sendUpdate:) withObject:(NSString *)sender waitUntilDone:YES];
+		[_engine release];	
+	}
+
+	[pool release];
 }
 
 
@@ -152,23 +168,42 @@
 //
 - (void)startProgressAnimation
 {
-	if (!baseSheet) { 
+	if (!baseSheet) {
 		baseSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait" ,@"")
-					 delegate:self 
-					 cancelButtonTitle:nil 
-					 destructiveButtonTitle: nil 
-					 otherButtonTitles: nil]; 
+												delegate:self
+                                       cancelButtonTitle:nil
+                                  destructiveButtonTitle: nil
+                                       otherButtonTitles: nil];
+		
+        progbar = [[UIProgressView alloc] initWithFrame:CGRectMake(50.0f, 45.0f, 220.0f, 20.0f)];
+        [progbar setProgressViewStyle: UIProgressViewStyleDefault];
+        [baseSheet addSubview:progbar];
+        [progbar release];
+		
+		UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 65.0f, 300.0f, 30.0f)];
+		[message setText:NSLocalizedString(@"Uploading image...",@"")];
+		[message setTextAlignment:UITextAlignmentCenter];
+		[message setBackgroundColor:[UIColor clearColor]];
+		[message setFont:[UIFont systemFontOfSize:13]];
+		[message setTextColor:[UIColor whiteColor]];
+		[baseSheet addSubview:message];
+		[message release];
+		
+		[baseSheet addButtonWithTitle:@"HIDE"];
+		for (UIView *vista in baseSheet.subviews) {
+			if (([vista isKindOfClass:[UILabel class]]) || ([vista isKindOfClass:[UIProgressView class]])) {
+				//NSLog(@"Mostro %@", [vista class]);
+				[vista setAlpha:1.0f];
+			} else {
+				[vista setAlpha:0.0f];
+			}
+			
+		}
+		[progbar setProgress: 0.0];
+	}
 	
-		[baseSheet setNumberOfRows:5]; 
-		progbar = [[UIProgressView alloc] initWithFrame:CGRectMake(50.0f, 70.0f, 220.0f, 90.0f)]; 
-		[progbar setProgressViewStyle: UIProgressViewStyleDefault]; 
-		[baseSheet addSubview:progbar]; 
-		[progbar release]; 
-	} 
-	[baseSheet setMessage:NSLocalizedString(@"Uploading image...",@"")]; 
-	[progbar setProgress: 0.0];
-
-	[baseSheet showInView:self.view]; 
+	pikAppDelegate * _delegate = (pikAppDelegate *)[UIApplication sharedApplication].delegate;
+    [baseSheet showInView:_delegate.window];
 } 
 
 
@@ -180,6 +215,8 @@
 	// Chiudo la rotellina
 	if (baseSheet) {
 		[baseSheet dismissWithClickedButtonIndex:0 animated:YES];
+		[baseSheet release];
+		baseSheet=nil;
 	}
 }
 
@@ -244,7 +281,7 @@
 	unsigned char * subsetData = (unsigned char *)malloc(subsetBytesPerRow * subsetHeight);
 	
 	CGColorSpaceRef grayColorSpace = CGColorSpaceCreateDeviceRGB();
-	NSLog(@"nb of components = %d (subsetData %d)", CGColorSpaceGetNumberOfComponents(grayColorSpace), subsetBytesPerRow * subsetHeight);
+//	NSLog(@"nb of components = %d (subsetData %d)", CGColorSpaceGetNumberOfComponents(grayColorSpace), subsetBytesPerRow * subsetHeight);
 	CGContextRef ctx = CGBitmapContextCreate(subsetData, subsetWidth, subsetHeight, 8, subsetBytesPerRow, grayColorSpace, kCGImageAlphaNoneSkipFirst);
 	CGColorSpaceRelease(grayColorSpace);
 	CGContextSetInterpolationQuality(ctx, kCGInterpolationNone);
@@ -267,12 +304,10 @@
 	CGImageRelease(subsetImageRef);
 	
 	CGContextRelease(ctx);
-NSLog(@"grayscale image size = (%f, %f)", subsetImage.size.width, subsetImage.size.height);
 
 	pikAppDelegate *delegate=  [UIApplication sharedApplication].delegate;
 	NSDictionary *_jobInfo = [delegate jobInfo];
 	[_jobInfo setObject:UIImageJPEGRepresentation(subsetImage, 0.80f) forKey:@"image"];
-NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] length]);
 }  
 
 
@@ -322,12 +357,10 @@ NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] lengt
 	CGImageRelease(subsetImageRef);
 	
 	CGContextRelease(ctx);
-	NSLog(@"grayscale image size = (%f, %f)", subsetImage.size.width, subsetImage.size.height);
 	
 	pikAppDelegate *delegate=  [UIApplication sharedApplication].delegate;
 	NSDictionary *_jobInfo = [delegate jobInfo];
 	[_jobInfo setObject:UIImageJPEGRepresentation(subsetImage, 0.80f) forKey:@"image"];
-	NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] length]);
 }  
 
 
@@ -544,11 +577,8 @@ NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] lengt
 	float rapportoCompressione=0.7f;
 	
 	if (  [[NSUserDefaults standardUserDefaults] boolForKey:@"switchCropCtl"] ) {
-		NSLog(@"CROPPED");
-		
 		// Converto l'immagine a 640 pixel e in GrayScale
 		[self prepareSubset:info];
-		
 		
 		rapportoCompressione=0.7f;
 	} else {
@@ -565,18 +595,15 @@ NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] lengt
 			targetSize.height = MAX_DIMENSION;
 		}
 		
-		NSLog(@"PRE size %f,%f", width, height);
 		//originalImage = [originalImage imageByScalingAndCroppingForSize:targetSize];
 		
 		originalImage = [originalImage scaleImageToSize:targetSize];
-
-		NSLog(@"POST size %f,%f", targetSize.width, targetSize.height);
 		
 		rapportoCompressione=0.7f;
 		
 		// Salvo l'immagine
 		[_jobInfo setObject:UIImageJPEGRepresentation(originalImage, rapportoCompressione) forKey:@"image"];
-		NSLog(@"Immagine a colori [%d bytes]",  [[_jobInfo objectForKey:@"image"] length]);
+//		NSLog(@"Immagine a colori [%d bytes]",  [[_jobInfo objectForKey:@"image"] length]);
 	}
 	
 	// Invio l'immagine al server
@@ -591,7 +618,8 @@ NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] lengt
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if (buttonIndex==kRetryButton) { // Tasto RETRY
-		[self startProgressAnimation];
+//		[self startProgressAnimation];
+		[self performSelector:@selector(startProgressAnimation) withObject:nil afterDelay:0.2f];
 
 		// Provo a rimandare l'immagine al server
 		[self performSelector:@selector(startUploadImageToServer:) withObject:nil afterDelay:0.2f];
@@ -647,6 +675,7 @@ NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] lengt
 
 	// Invio lo stato su twitter
 	[NSThread detachNewThreadSelector:@selector(sendTwitterStatus:) toTarget:self withObject:NSLocalizedString(@"has just translated an image using pikling",@"")];
+//	[self sendTwitterStatus:NSLocalizedString(@"has just translated an image using pikling",@"")];
 
 	// Chiudo la rotellina
 	[self performSelectorOnMainThread:@selector(stopProgressAnimation) withObject:nil waitUntilDone:YES];
@@ -724,6 +753,7 @@ NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] lengt
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+
 -(void)show_flag:(UIButton*)button
 {
 	pikAppDelegate *_delegate=  [UIApplication sharedApplication].delegate;
@@ -741,7 +771,8 @@ NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] lengt
 
 
 #pragma mark -
-#pragma mark Delegati per
+#pragma mark Delegati per il localizzatore
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation 
 { 
 	// Utilizzare passati dal metodo per gestire le posizioni 
@@ -753,8 +784,36 @@ NSLog(@"Upload di immagine [%d bytes]",  [[_jobInfo objectForKey:@"image"] lengt
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error 
 { 
 	// Gestione degli errori 
-	NSLog(@"GPS: didFailWithError");
-} 
+//	NSLog(@"GPS: didFailWithError");
+}
 
+
+//=============================================================================================================================
+/*
+#pragma mark -
+#pragma mark TwitterEngineDelegate
+
+// Attivare sta roba solo per debug
+- (void) requestSucceeded: (NSString *) requestIdentifier {
+	NSLog(@"Request %@ succeeded", requestIdentifier);
+}
+
+- (void) requestFailed: (NSString *) requestIdentifier withError: (NSError *) error {
+	NSLog(@"Request %@ failed with error: %@", requestIdentifier, error);
+}
+*/
+
+#pragma mark SA_OAuthTwitterEngineDelegate
+
+- (void) storeCachedTwitterOAuthData: (NSString *) data forUsername: (NSString *) username 
+{
+	[[NSUserDefaults standardUserDefaults] setObject: data forKey: @"authData"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username 
+{
+	return [[NSUserDefaults standardUserDefaults] objectForKey: @"authData"];
+}
 
 @end

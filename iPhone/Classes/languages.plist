@@ -4,27 +4,11 @@
 <array>
 	<dict>
 		<key>abbreviation</key>
-		<string>ar</string>
-		<key>english</key>
-		<string>Arabic</string>
-		<key>original</key>
-		<string>العربية</string>
-	</dict>
-	<dict>
-		<key>abbreviation</key>
 		<string>de</string>
 		<key>english</key>
 		<string>German</string>
 		<key>original</key>
 		<string>Deutsch</string>
-	</dict>
-	<dict>
-		<key>abbreviation</key>
-		<string>el</string>
-		<key>english</key>
-		<string>Greek</string>
-		<key>original</key>
-		<string>Ελληνικά</string>
 	</dict>
 	<dict>
 		<key>abbreviation</key>
@@ -52,35 +36,11 @@
 	</dict>
 	<dict>
 		<key>abbreviation</key>
-		<string>id</string>
-		<key>english</key>
-		<string>Indonesian</string>
-		<key>original</key>
-		<string>Bahasa Indonesia</string>
-	</dict>
-	<dict>
-		<key>abbreviation</key>
 		<string>it</string>
 		<key>english</key>
 		<string>Italian</string>
 		<key>original</key>
 		<string>Italiano</string>
-	</dict>
-	<dict>
-		<key>abbreviation</key>
-		<string>ja</string>
-		<key>english</key>
-		<string>Japanese</string>
-		<key>original</key>
-		<string>日本語</string>
-	</dict>
-	<dict>
-		<key>abbreviation</key>
-		<string>ko</string>
-		<key>english</key>
-		<string>Korean</string>
-		<key>original</key>
-		<string>한국어</string>
 	</dict>
 	<dict>
 		<key>abbreviation</key>
@@ -100,35 +60,11 @@
 	</dict>
 	<dict>
 		<key>abbreviation</key>
-		<string>ru</string>
-		<key>english</key>
-		<string>Russian</string>
-		<key>original</key>
-		<string>русский язык</string>
-	</dict>
-	<dict>
-		<key>abbreviation</key>
 		<string>sv</string>
 		<key>english</key>
 		<string>Swedish</string>
 		<key>original</key>
 		<string>Svenska</string>
-	</dict>
-	<dict>
-		<key>abbreviation</key>
-		<string>th</string>
-		<key>english</key>
-		<string>Thai</string>
-		<key>original</key>
-		<string>ไทย</string>
-	</dict>
-	<dict>
-		<key>abbreviation</key>
-		<string>zh</string>
-		<key>english</key>
-		<string>Chinese</string>
-		<key>original</key>
-		<string>中文</string>
 	</dict>
 </array>
 </plist>

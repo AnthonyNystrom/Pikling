@@ -30,6 +30,7 @@
 	
 	// Invio il mio stato su TWITTER
 	if ( ([un length] >2) && ([pw length] >2)) {
+		/*|||
 		// Se configurato sparo lo stato su twitter
 		NSString *richiesta= [[[NSString alloc] initWithFormat:@"http://%@/Twitter.aspx?command=checkexists&username=%@&password=%@", twitterIpAddr, un, pw] autorelease];
 		NSURL *twitterURL = [NSURL URLWithString:richiesta];
@@ -45,6 +46,7 @@
 			[risposta release];
 		}
 		[block release];
+		 */
 	}
 	
 	[pool release];
@@ -168,6 +170,10 @@
 
 			if ( [[NSUserDefaults standardUserDefaults] boolForKey:@"switchSoundsCtl"] ) [_delegate playSound:@"/Pikling Twitt Off -8db.mp3" withDelta:-0.02f];
 		} else {
+[[NSUserDefaults standardUserDefaults] setObject:username forKey:@"twitterUsername"];
+[[NSUserDefaults standardUserDefaults] setObject:password forKey:@"twitterPassword"];
+[[NSUserDefaults standardUserDefaults] synchronize];
+/*
 			// Se configurato, controllo i dati dell'account su twitter
 			if (self.twitterIpAddr==nil) self.twitterIpAddr=kTwitterIp;
 			NSString *richiesta=[[NSString alloc] initWithFormat:@"http://%@/Twitter.aspx?command=checkexists&username=%@&password=%@", twitterIpAddr, username, password];
@@ -204,6 +210,7 @@
 
 
 			}
+*/
 		}
 	}
 

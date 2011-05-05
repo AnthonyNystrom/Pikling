@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 
 
-#define kPiklingServerIp @"69.21.114.136"
+#define kPiklingServerIp @"servicesnodeone.pikling.com"
 //#define kPiklingServerIp @"69.21.14.102"
+//#define kPiklingServerIp @"184.106.162.190"
 
 #define kPacketSize 4096
 
@@ -56,12 +57,14 @@
 
 	NSData *header; // Dimensione dell'immagine da spedire
 	NSString *richiesta;
-	
+
 	// Variabili di gestione delle MAS
 	WSMasEvent uploadImageMAS;	// MAS per l'upload dell'immagine da OCRizzare
 	WSMasEvent uploadRequestMAS;	// MAS per la richiesta di invio risposta a email
 	BOOL errorAlreadySent;		// Flag per per limitare la generazione continua di errori di comunicazione
 	BOOL streamError;
+
+	NSTimer *timer;
 }
 
 @property (nonatomic, assign) NSInputStream * iStream;

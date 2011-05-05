@@ -9,6 +9,7 @@
 #import "FlipsideViewController.h"
 #import "WebServices.h"
 #import <CoreLocation/CoreLocation.h>
+#import "SA_OAuthTwitterEngine.h"
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, WebServicesDelegate, LanguagesViewControllerDelegate, UIActionSheetDelegate, CLLocationManagerDelegate> {
 	// Icone relativi alle impostazioni lingua

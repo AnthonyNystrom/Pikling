@@ -12,11 +12,12 @@
 #import "pikAppDelegate.h"
 #import "LanguagesViewController.h"
 
-#import "TwitterSettingsViewController.h"
-
+//#import "TwitterSettingsViewController.h"
+#import "SA_OAuthTwitterEngine.h"
+#import "SA_OAuthTwitterController.h"
 
 // Questo gadget al momento non lo faccio ancora vedere
-#define SHOW_CROP_SWITCH
+#undef SHOW_CROP_SWITCH
 
 @implementation FlipsideViewController
 
@@ -242,10 +243,27 @@
 #pragma mark -
 #pragma mark Chiamata a twitter
 
-- (IBAction)showTwitterSettings {
-	TwitterSettingsViewController *controller = [[TwitterSettingsViewController alloc] initWithIpAddress:@"69.21.114.130" ];
-	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
+#define kOAuthConsumerKey			@"7kvogUtgrqC85dwzO68Ayg"
+#define kOAuthConsumerSecret		@"rIZXOhnX4NctCH396ZU132IT1574Tnf7LyGQp1DFKA"
+
+- (IBAction)showTwitterSettings 
+{
+	SA_OAuthTwitterEngine *_engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate: self];
+	_engine.consumerKey = kOAuthConsumerKey;
+	_engine.consumerSecret = kOAuthConsumerSecret;
+	
+	if( ! [_engine isAuthorized] ){  
+		UIViewController *controller = [SA_OAuthTwitterController controllerToEnterCredentialsWithTwitterEngine:_engine delegate:self];
+		[self presentModalViewController:controller animated:YES];
+	} else {
+ 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"authData"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+	[_engine release];
+	
+	// Aggiorno i dati della cella della tabella
+	NSArray *indexPaths = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:2], nil]; 
+	[tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
 }
 
 
@@ -254,7 +272,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell;
+	UITableViewCell *cell=nil;
 
 	switch ([indexPath section]) {
 		case 0: // Sezione lingue
@@ -353,7 +371,7 @@
 				[statoTwitter setTextAlignment:UITextAlignmentRight];
 			}
 
-			if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"twitterUsername"] != nil ) [statoTwitter setText:NSLocalizedString(@"Enabled",@"")];
+			if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"authData"] != nil ) [statoTwitter setText:NSLocalizedString(@"Enabled",@"")];
 			else [statoTwitter setText:NSLocalizedString(@"Disabled",@"")];
 			[cell.contentView addSubview:statoTwitter];
 			
@@ -422,12 +440,12 @@
 		case 1:
 			return NSLocalizedString(@"Send results to...",@"");
 			break;
-		case 3:
-			return NSLocalizedString(@"Image...",@"");
-			break;
-		case 4:
-			return NSLocalizedString(@"Sounds...",@"");
-			break;
+//		case 3:
+//			return NSLocalizedString(@"Image...",@"");
+//			break;
+//		case 4:
+//			return NSLocalizedString(@"Sounds...",@"");
+//			break;
 		default:
 			return @" ";
 			break;
@@ -620,13 +638,13 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
 	UITableViewCell *cell = (UITableViewCell*) [[textField superview] superview];
-	NSLog(@"%f  %f  %f",cell.frame.origin.y,  cell.frame.size.height, tableView.bounds.origin.y);
+//	NSLog(@"%f  %f  %f",cell.frame.origin.y,  cell.frame.size.height, tableView.bounds.origin.y);
 	
 	if (shiftTabella != 0.0f) return YES;
 	
 	CGFloat fondoCellaY= cell.frame.origin.y + cell.frame.size.height - tableView.bounds.origin.y;
 	if ( fondoCellaY > (416 - kOFFSET_FOR_KEYBOARD)) shiftTabella = fondoCellaY - kOFFSET_FOR_KEYBOARD +15.0; else shiftTabella=0.0f;
-	NSLog(@"shift %f fondocellaY=%f ",shiftTabella, fondoCellaY);
+//	NSLog(@"shift %f fondocellaY=%f ",shiftTabella, fondoCellaY);
 	
 	[self setViewMovedUp:&shiftTabella];
 
@@ -657,5 +675,36 @@
 	
 	[UIView commitAnimations];
 }
+
+
+
+//=============================================================================================================================
+#pragma mark -
+#pragma mark SA_OAuthTwitterEngineDelegate
+
+- (void) storeCachedTwitterOAuthData: (NSString *) data forUsername: (NSString *) username 
+{
+	NSUserDefaults			*defaults = [NSUserDefaults standardUserDefaults];
+	
+	[defaults setObject: data forKey: @"authData"];
+	[defaults synchronize];
+}
+
+- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username 
+{
+	return [[NSUserDefaults standardUserDefaults] objectForKey: @"authData"];
+}
+
+#pragma mark -
+#pragma mark TwitterEngineDelegate
+
+- (void) requestSucceeded: (NSString *) requestIdentifier {
+//	NSLog(@"Request %@ succeeded", requestIdentifier);
+}
+
+- (void) requestFailed: (NSString *) requestIdentifier withError: (NSError *) error {
+//	NSLog(@"Request %@ failed with error: %@", requestIdentifier, error);
+}
+
 
 @end

@@ -7,8 +7,50 @@
 //
 
 #import "WebServices.h"
-#import "UIImageExtras.h"                                                                                                                                
+#import "UIImageExtras.h"
 #import "pikAppDelegate.h"
+
+@interface NSStream(Host)
+
++(void)getStreamsToHostNamed:(NSString *)hostName 
+						 port:(NSInteger)port 
+				  inputStream:(NSInputStream **)inputStreamPtr 
+				 outputStream:(NSOutputStream **)outputStreamPtr;
+@end
+
+@implementation NSStream(Host)
+
++(void)getStreamsToHostNamed:(NSString *)hostName 
+						 port:(NSInteger)port 
+				  inputStream:(NSInputStream **)inputStreamPtr 
+				 outputStream:(NSOutputStream **)outputStreamPtr
+{
+    CFReadStreamRef     readStream;
+    CFWriteStreamRef    writeStream;
+	
+    assert(hostName != nil);
+    assert( (port > 0) && (port < 65536) );
+    assert( (inputStreamPtr != NULL) || (outputStreamPtr != NULL) );
+	
+    readStream = NULL;
+    writeStream = NULL;
+	
+    CFStreamCreatePairWithSocketToHost(
+									   NULL, 
+									   (CFStringRef) hostName, 
+									   port, 
+									   ((inputStreamPtr  != nil) ? &readStream : NULL),
+									   ((outputStreamPtr != nil) ? &writeStream : NULL)
+									   );
+	
+    if (inputStreamPtr != NULL) {
+        *inputStreamPtr  = [NSMakeCollectable(readStream) autorelease];
+    }
+    if (outputStreamPtr != NULL) {
+        *outputStreamPtr = [NSMakeCollectable(writeStream) autorelease];
+    }
+}
+@end
 
 
 @implementation WebServices
@@ -22,20 +64,15 @@
 - (void)openConnection
 {
 	streamError=NO;
-	// Attivo la connessione con il server
-	NSHost* host;
-	host = [NSHost hostWithAddress:kPiklingServerIp];
-	if( host ) {
-		[NSStream getStreamsToHost:host port:8080 inputStream:&iStream outputStream:&oStream] ;
-		if(self.iStream && self.oStream) {
-			self.iStream.delegate = self;
-			[self.iStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-			[self.iStream open];
-			
-			self.oStream.delegate = self;
-			[self.oStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-			[self.oStream open];
-		}
+	[NSStream getStreamsToHostNamed:kPiklingServerIp port:8080 inputStream:&iStream outputStream:&oStream] ;
+	if(self.iStream && self.oStream) {
+		self.iStream.delegate = self;
+		[self.iStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+		[self.iStream open];
+		
+		self.oStream.delegate = self;
+		[self.oStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+		[self.oStream open];
 	}
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -55,6 +92,10 @@
 //
 - (void) closeConnection
 {
+	// Distruggo il timer di sicurezza
+	[timer invalidate];
+	timer=nil;
+
 	// Chiudo gli stream 
 	[self.iStream close];
 //	[self.iStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -83,7 +124,7 @@
 		// Segnalo l'errore
 		[self.delegate streamEventErrorOccurred:errorDescription];
 
-		// Chiudo la connessione con il server			
+		// Chiudo la connessione con il server
 		[self closeConnection];
 	}
 }
@@ -99,7 +140,7 @@
 
 	pikAppDelegate * _delegate = [UIApplication sharedApplication].delegate;
 	NSMutableDictionary *_jobInfo = [_delegate jobInfo];
-	
+
 	NSData * answer;
 	NSUInteger dimensioneImmagine;
 	uint8_t esito;
@@ -107,11 +148,11 @@
 	NSString *lingue;
 	NSData *imageData;
 	NSMutableData * message;
-	
+
 	switch ( uploadImageMAS ) {
 		case kWSIdleState: // Stato di riposo della MAS
 			break;
-			
+
 		case kWSSendPacketType: // Segnalo il tipo di pacchetto che sto per inviare
 			esito=0; // 0 = Invio immagine
 			[self.oStream write:&esito maxLength:1];
@@ -135,17 +176,17 @@
 					  [_delegate deviceInfoString], _delegate.currentPosition.coordinate.latitude , _delegate.currentPosition.coordinate.longitude, 
 					  [[NSUserDefaults standardUserDefaults] objectForKey:@"emailAddress"], 
 					  [_jobInfo objectForKey:@"OriginalLanguage"], [_jobInfo objectForKey:@"DestinationLanguage"]] autorelease];
-			
+
 			// Sparo i dati
-			dimensioneImmagine = [lingue length];                                                                                                                     
-		
-			message = [[[NSMutableData alloc] initWithCapacity:([lingue length]+2)] autorelease];                                                
-			[message appendBytes:(const void *)&dimensioneImmagine length:2];                                                                           
-			[message appendData:[lingue dataUsingEncoding:NSASCIIStringEncoding]];                                                                                                       
+			dimensioneImmagine = [lingue length];
+
+			message = [[[NSMutableData alloc] initWithCapacity:([lingue length]+2)] autorelease];
+			[message appendBytes:(const void *)&dimensioneImmagine length:2];
+			[message appendData:[lingue dataUsingEncoding:NSASCIIStringEncoding]];
 
 			//NSLog(@"1. Spedito pacchetto con info lingue %@", [message description]);
-			
-			[self.oStream write:[message bytes] maxLength:[message length]];                                                                    
+
+			[self.oStream write:[message bytes] maxLength:[message length]];
 			uploadImageMAS = kWSReceiveJob;
 
 			break;
@@ -156,26 +197,26 @@
 
 			// Imposto il nuovo identificativo del JOB
 			[_jobInfo setObject:answer forKey:@"JobIdentifier"];
-			
+
 			// Rimuovo vecchie chiavi che potrebbero essermi rimaste dal''ultimo JOB eseguito
 			[_jobInfo removeObjectForKey:@"OriginalResult"];
 			[_jobInfo removeObjectForKey:@"DestinationResult"];
-			
+
 			uploadImageMAS = kWSSendImageSize;
 			//break; Commentato perchè sparo subito il pacchetto successivo
 		case kWSSendImageSize: // Invio i primi 4 bytes contenenti la dimensione dell'immagine da inviare
 			dimensioneImmagine = [[_jobInfo objectForKey:@"image"] length];
 			header = [[ NSData alloc] initWithBytes:&dimensioneImmagine length:4 ];
-			
+
 			// Sparo i dati
 			[self.oStream write:[header bytes] maxLength:[header length]];
-			NSLog(@"Upload di immagine [%d bytes]", dimensioneImmagine);
+//			NSLog(@"Upload di immagine [%d bytes]", dimensioneImmagine);
 			uploadImageMAS = kWSReceiveImageSize;
 			break;
 		case kWSReceiveImageSize:	// Ho ricevuto l'header lo confronto e mando l'immagine
 			answer = [self receiveDataWithLength:4];
 			//NSLog(@"4. Ricevuto pacchetto header dal server %@  header %@", [answer description], [header description]);
-		
+
 			// Controllo il pacchetto ricevuto e se OK vado avanti
 			if ([answer isEqualToData:header ]) {
 				[header release];
@@ -220,13 +261,13 @@
 			//NSLog(@"engine %d", esito);
 
 			// Motore di ricerca fuori dai limiti consentiti
-			if ((esito > 2) && ( esito != 0xFF)) {
+			if ((esito > 3) && ( esito != 0xFF)) {
 				// Segnalo l'errore e chiudo la connessione
 				[self errorOccuredWithString:NSLocalizedString(@"Pikling protocol error",@"")];
 			} else {
 				// Motore traduzioni corretto 
 				[_jobInfo setObject:[NSString stringWithFormat:@"%d", esito ] forKey:@"Translator"];
-				
+
 				// Esamino il numero di bytes che mi dovranno arrivare in risposta
 				if (arriveranno) {
 					uploadImageMAS = kWSReceiveLangInData;
@@ -240,9 +281,9 @@
 			break;
 		case kWSReceiveLangInData:	// Ricevo la traduzione dal server in lingua sorgente
 			answer = [self receiveDataWithLength:arriveranno];
-			
+
 			NSString *dataString = [[[NSString alloc] initWithData:answer encoding:NSUTF8StringEncoding] autorelease];
-			NSLog(@"OCR in lingua sorgente: %@",dataString);
+//			NSLog(@"OCR in lingua sorgente: %@",dataString);
 
 			[_jobInfo setObject:dataString forKey:@"OriginalResult"];
 		case kWSSendLangInAck: // Mando il risultato della ricezione del pacchetto
@@ -259,20 +300,20 @@
 			break;
 		case kWSReceiveLangOutData:	// Ricevo la traduzione dal server in lingua sorgente
 			answer = [self receiveDataWithLength:arriveranno];
-			
+
 			dataString = [[[NSString alloc] initWithData:answer encoding:NSUTF8StringEncoding] autorelease];
-			//NSLog(@"dataString len %d", [dataString length]);			
+			//NSLog(@"dataString len %d", [dataString length]);
 			[_jobInfo setObject:dataString forKey:@"DestinationResult"];
-			
-			NSLog(@"OCR in lingua destinazione: %@", dataString);
+
+//			NSLog(@"OCR in lingua destinazione: %@", dataString);
 			uploadImageMAS=kWSReceiveLangOutData;
 		case kWSSendLangOutAck: // Mando il risultato della ricezione del pacchetto
 			esito=1;
 			[self.oStream write:&esito maxLength:1];
-			
+
 			// Segnalo la fine del processo agli interessati
 			[self.delegate WebServicesDidFinish];
-			
+
 			// Chiudo la connessione con il server
 			[self closeConnection];
 			break;
@@ -290,15 +331,15 @@
 - (void)sendRequestMAS
 {
 	//NSLog(@"sendRequestMAS %d", uploadRequestMAS);
-	
+
 	NSData * answer;
 	uint16_t lunghezzaPacchetto;
 	uint8_t esito;
-	
+
 	switch ( uploadRequestMAS ) {
 		case kWSIdleState: // Stato di riposo della MAS
 			break;
-			
+
 		case kWSSendPacketType: // Segnalo il tipo di pacchetto che sto per inviare
 			esito=1; // 1 = Richiesta spedizione mail
 			[self.oStream write:&esito maxLength:1];
@@ -314,7 +355,7 @@
 				[self errorOccuredWithString:NSLocalizedString(@"Pikling protocol error",@"")];
 				break;
 			}
-			
+
 		case kWSSendLangInfo: // Invio 2 bytes contenenti la lunghezza del pacchetto di richiesta
 			lunghezzaPacchetto = [richiesta length];
 			header = [[ NSData alloc] initWithBytes:&lunghezzaPacchetto length:2 ];
@@ -324,10 +365,10 @@
 
 			uploadRequestMAS = kWSReceiveImageSize;
 			break;
-			
+
 		case kWSReceiveImageSize:	// Ricevo l'echo del pacchetto inviato
 			answer = [self receiveDataWithLength:2];
-			
+
 			// Controllo il pacchetto ricevuto e se OK vado avanti
 			if ([answer isEqualToData:header]) {
 				uploadRequestMAS = kWSSendImageData;
@@ -339,17 +380,17 @@
 			}
 		case kWSSendImageData:	// Invio la richiesta al server
 			[self.oStream write:[[richiesta dataUsingEncoding:NSASCIIStringEncoding] bytes] maxLength:[richiesta length]];
-			//NSLog(richiesta);			
+			//NSLog(richiesta);
 			uploadRequestMAS = kWSReceiveImageAnswer;
 			break;
-		case kWSReceiveImageAnswer:	
+		case kWSReceiveImageAnswer:
 			answer = [self receiveDataWithLength:1];
 			[answer getBytes:&esito length:1];
 			if (esito == 1) {
 			    // Segnalo la fine del processo agli interessati
 			    [self.delegate WebServicesDidFinish];
 
-			    // Chiudo la connessione con il server			
+			    // Chiudo la connessione con il server
 			    [self closeConnection];
 			} else {
 			    // Segnalo l'errore e chiudo la connessione
@@ -370,25 +411,28 @@
 {
 	NSAutoreleasePool* pool = [NSAutoreleasePool new];   
 
-	NSLog(@"Inizio trasmissione immagine al server");
+//	NSLog(@"Inizio trasmissione immagine al server");
 	// Mi collego con il server
 	[self openConnection];
 
 	pikAppDelegate * _delegate = [UIApplication sharedApplication].delegate;
 	NSMutableDictionary *_jobInfo = [_delegate jobInfo];
 	[_jobInfo removeObjectForKey:@"JobIdentifier"];
-		
+
 	// Attivo la macchina a stati per l'invio dell'immagine
 	uploadImageMAS = kWSSendPacketType;
 	[self sendImageMAS]; // Innesco la MAS
+
+	// Faccio partire un timer di sicurezza che dopo 30 sec. chiude il collegamento nel caso non sia ancora arrivata la risposta
+	timer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(connectionTimeout:) userInfo:nil repeats:NO];
 
 	// Se non ho avuto problemi durante la connessione inizio l'invio
 	if (!streamError) {
 		do {
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		} while (uploadImageMAS != kWSIdleState);
-	}	
-	NSLog(@"web services finished");
+	}
+//	NSLog(@"web services finished");
 	[pool release];
 }
 
@@ -401,17 +445,17 @@
 	// Preparo la richiesta
 	pikAppDelegate * _delegate = [UIApplication sharedApplication].delegate;
 	NSMutableDictionary *_jobInfo = [_delegate jobInfo];
-	
+
 	NSString *idJob = [[[NSString alloc] initWithData:[_jobInfo objectForKey:@"JobIdentifier"] encoding:NSASCIIStringEncoding ] autorelease];
 	richiesta = [[NSString alloc] initWithFormat:@"%@|%@|%@", idJob, tipo, destinatario];
-	
+
 	// Mi collego con il server
 	[self openConnection];
-	
+
 	// Attivo la macchina a stati per l'invio dell'immagine
 	uploadRequestMAS = kWSSendPacketType;
 	[self sendRequestMAS]; // Innesco la MAS
-	
+
 	if (!streamError) {
 		NSAutoreleasePool* pool = [NSAutoreleasePool new];   
 		do {
@@ -426,12 +470,12 @@
 	int len = 0;
 	size_t lengthByte = kPacketSize;
 	NSMutableData *retBlob = nil;
-	
+
 	retBlob = [NSMutableData dataWithLength:lengthByte];
-	
+
 	len = [self.iStream read:(uint8_t *)[retBlob mutableBytes] maxLength:lengthByte];
 	//NSLog(@"Stream read: [%d bytes] %@", len, [retBlob description]);
-	
+
 	return retBlob;
 }
 
@@ -440,7 +484,7 @@
 	int len = 0;
 	NSMutableData *retBlob = nil;
 	retBlob = [NSMutableData dataWithLength:lengthByte];
-	
+
 	len = [self.iStream read:(uint8_t *)[retBlob mutableBytes] maxLength:lengthByte];
 	//NSLog(@"letti presenti: %d attesi: %d %@", len, lengthByte, [retBlob description]);	
 
@@ -451,7 +495,7 @@
 - (void)sendData:(NSData *)_data
 {
     txData = _data;
-    
+
     uint8_t *readBytes = (uint8_t *)[txData bytes];
     int data_len = [txData length];
     unsigned int len = ((data_len >= kPacketSize) ? kPacketSize : data_len);
@@ -460,7 +504,7 @@
     len = [self.oStream write:(const uint8_t *)buf maxLength:len];
     byteIndex += len;
     //NSLog(@"sendData length:%d", byteIndex);
-    
+
     // Verifico di aver trasmesso tutto il pacchetto in modo da poter distruggere txData
     if (byteIndex == data_len) txData=nil;
 }
@@ -495,7 +539,7 @@
 		{
 			if(stream == self.iStream) {
 				//NSLog(@"NSStreamEventHasBytesAvailable (RX)");
-				
+
 				// Mi è arrivata roba, quindi chiamo le relative MAS
 				if (uploadImageMAS) [self sendImageMAS];
 				if (uploadRequestMAS) [self sendRequestMAS];
@@ -508,17 +552,33 @@
 			streamError=YES;
 
 			NSError *theError = [stream streamError]; 
-			
-			NSLog(@"stream NSStreamEventErrorOccurred [ERR]: %@", stream);
-			
+
+//			NSLog(@"stream NSStreamEventErrorOccurred [ERR]: %@", stream);
+
 			// Segnalo l'errore e chiudo la connessione
 			[self errorOccuredWithString:[theError localizedDescription]];
-			
+
 			break;
 		}
 		default:
 			break;
 	}
+}
+
+
+//
+// E' scattato il timer di sicurezza
+//
+-(void)connectionTimeout:(NSTimer*)timer
+{
+	// Segnalo l'errore
+	[self.delegate streamEventErrorOccurred:NSLocalizedString(@"Pikling services are down for maintenance.\nPlease try again in a few minutes.",@"")];
+	
+	// Chiudo la connessione con il server
+	[self closeConnection];
+
+    [timer invalidate];
+	timer = nil;
 }
 
 @end
