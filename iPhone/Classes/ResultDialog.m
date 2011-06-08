@@ -346,7 +346,7 @@
 	
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Done",@"")
 					message:[NSString stringWithFormat:NSLocalizedString(@"Email sent to %@!",@""),emailAddr]
-					   delegate:self 
+					   delegate:nil 
 				  cancelButtonTitle:NSLocalizedString(@"Ok",@"")
 				  otherButtonTitles:nil];
 	[alert show];
@@ -437,6 +437,7 @@
 
 #pragma mark - Alert view per inserimento indirizzo email manuale
 - (IBAction)askDestination:(id)sender {
+/*
 	UITextField *textField;
 	UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString( @"Send email to", @"") 
 													  message:@""
@@ -454,6 +455,28 @@
 	myAlert.tag = kAskDestination;
 	[myAlert show];
 	[myAlert release];
+ */
+	// Ask for Username and password.
+	UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString( @"Send email to", @"") 
+														message:@"\n \n" 
+													   delegate:self 
+											  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+											  otherButtonTitles:NSLocalizedString( @"Ok",@""), nil];
+	// Adds a username Field
+	emailTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)]; 
+	emailTextField.placeholder = NSLocalizedString(@"email address", @"");
+	emailTextField.backgroundColor=[UIColor whiteColor]; 
+	emailTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+	emailTextField.keyboardType = UIKeyboardTypeEmailAddress;
+	emailTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+	emailTextField.autocapitalizationType  = UITextAutocapitalizationTypeWords;
+	emailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+	emailTextField.textAlignment = UITextAlignmentCenter;
+	emailTextField.text = emailAddr;
+	[myAlert addSubview:emailTextField];
+	myAlert.tag = kAskDestination;
+	[myAlert show];
+	[myAlert release];	
 }
 
 #pragma mark - Delegato dell'Alert view per l'inserimento dell'indirizzo email
@@ -462,14 +485,16 @@
 	// Richiesta
 	if (alertView.tag == kAskDestination) {
 		if(buttonIndex == 1) {
-			emailAddr = [[NSString alloc] initWithString:alertView.textField.text];
+			emailAddr = [[NSString alloc] initWithString:emailTextField.text];
 			if(emailAddr==nil) return; //
 
 			// Invio la richiesta di email
 			// Invio al web service la richiesta (un pò ritardata per fare chiudere lo sheet che l'ha chiamata)
 			[self performSelector:@selector(performEmailRequestTo:) withObject:emailAddr afterDelay:0.2]; 
+			[emailAddr release];
 		}
 	}
+	[emailTextField release];
 }
 
 @end

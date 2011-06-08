@@ -24,6 +24,7 @@
 	
 	NSString *emailAddr;
 	NSString *typeOfFile;
+	UITextField *emailTextField;
 }
 
 @property (nonatomic, retain) UIScrollView *scrollView;
